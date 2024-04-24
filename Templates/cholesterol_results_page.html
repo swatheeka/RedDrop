@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cholesterol Test Results</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .high {
+            background-color: #ffcccc;
+        }
+        .low {
+            background-color: #ccffcc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cholesterol Test Results</h1>
+    <h2>Results</h2>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Expected Range</th>
+            <th>Status</th>
+        </tr>
+        {% for key, data in results.items() %}
+        <tr>
+            <td>{{ key.replace('_', ' ') }}</td>
+            <td>{{ data.value }}</td>
+            <td>{{ data.range }}</td>
+            {% if data.status == 'High' %}
+            <td class="high">{{ data.status }}</td>
+            {% elif data.status == 'Low' %}
+            <td class="low">{{ data.status }}</td>
+            {% else %}
+            <td>{{ data.status }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% if recommendations %}
+    <h2>Recommendations</h2>
+    <ul>
+        {% for recommendation in recommendations %}
+        <li>{{ recommendation }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

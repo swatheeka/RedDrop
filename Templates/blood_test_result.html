@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedDrop - Blood Test Result</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/free-photo/heart-shape-stethoscope-medical-subjects_23-2150254029.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding: 50px 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .high {
+            background-color: #df6262;
+        }
+        .low {
+            background-color: #df6262;
+        }
+        .normal{
+            background-color: #6af2d5;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .recommendation {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .healthcare {
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blood Test Result</h1>
+        <h2>Results</h2>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Expected Range</th>
+                <th>Status</th>
+            </tr>
+            {% for key, data in results.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ data['value'] }}</td>
+                <td>
+                    {% if data['expected_range'] %}
+                        {{ data['expected_range'][0] }} - {{ data['expected_range'][1] }}
+                        {% if key == 'hemoglobin' %}
+                            g/dL
+                        {% elif key == 'pcv' %}
+                            %
+                        {% elif key == 'rbc_count' %}
+                            million cells/μL
+                        {% elif key == 'mcv' %}
+                            fL
+                        {% elif key == 'mch' %}
+                            pg
+                        {% elif key == 'mchc' %}
+                            %
+                        {% elif key == 'rdw' %}
+                            %
+                        {% elif key == 'tlc' %}
+                            cells/μL
+                        {% elif key == 'nlr' %}
+                            ratio
+                        {% elif key == 'platelet_count' %}
+                            platelets/μL
+                        {% endif %}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                {% if data['status'] == 'High' %}
+                <td class="high">{{ data['status'] }}</td>
+                {% elif data['status'] == 'Low' %}
+                <td class="low">{{ data['status'] }}</td>
+                {% else %}
+                <td class="normal">{{ data['status'] }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Recommendations</h2>
+        <ul>
+            {% for recommendation in recommendations %}
+            <li class="recommendation">{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+        <p class="healthcare">Please consult a healthcare professional for personalized recommendations.</p>
+    </div>
+</body>
+</html>
